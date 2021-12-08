@@ -11,8 +11,8 @@ const Modal = () => {
         </p>
       </div>
 
-      <div className="px-8 py-6 flex flex-col justify-end flex-grow">
-        <div className="w-full pb-6">
+      <div className="px-8 py-6 flex flex-col justify-end flex-grow h-full overflow-auto">
+        <div className="w-full pb-6 max-h-full overflow-auto">
           <Form />
           <button className={buttonStyles}>+ Add new group filter</button>
         </div>

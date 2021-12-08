@@ -41,7 +41,7 @@ const Dropdown = (props: dropdownProps) => {
       <div
         className={`${
           !isOpen && "hidden"
-        } absolute py-3.5 px-2 bg-dark border border-grey-200 z-10 rounded-md top-16 w-60`}
+        } absolute py-3.5 px-2 bg-dark border border-grey-200 z-10 rounded-md top-16 w-60 max-h-36 overflow-y-auto`}
       >
         {props.options.map(({ title, value }) => (
           <div key={title}>

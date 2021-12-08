@@ -1,31 +1,20 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import infoIcon from "../assets/icons/info.svg";
+import Filter, { FilterShape } from "./Filter";
 import {
   activeToggleStyle,
   buttonStyles,
   inactiveToggleStyle,
 } from "../styles/classNames";
-import Dropdown, { dropdownProps } from "./Dropdown";
-
-const fieldOptions: dropdownProps["options"] = [
-  {
-    title: "PREDICTION",
-    value: [
-      "Theme",
-      "Sub-theme",
-      "Reason",
-      "Language",
-      "Source",
-      "Rating",
-      "Time Period",
-    ],
-  },
-  { title: "COMMON", value: ["Customer ID"] },
-];
 
 const Form = () => {
-  const [toggle, setToggle] = useState("AND");
-  const [field, setField] = useState("");
+  const [toggle, setToggle] = useState<string>("AND");
+  const [filters, setFilters] = useState<number[]>([0]);
+  const filterGroupsRef = useRef<FilterShape[]>(null);
+
+  const addFilter = () => {
+    setFilters((filters) => [...filters, filters.length]);
+  };
 
   return (
     <div className="bg-dark rounded-sm p-4 mb-5 border border-grey-200">
@@ -49,17 +38,13 @@ const Form = () => {
         <img src={infoIcon} className="inline-block ml-2" alt="info" />
       </div>
 
-      <div className="flex mt-4">
-        <Dropdown
-          title="Field"
-          placeholder="Select field"
-          selected={field}
-          setSelected={setField}
-          options={fieldOptions}
-        />
-      </div>
+      {filters.map((filter) => (
+        <Filter key={filter} filterGroupsRef={filterGroupsRef} />
+      ))}
 
-      <button className={buttonStyles + " mt-4"}>+ Add filter</button>
+      <button className={buttonStyles + " mt-4"} onClick={addFilter}>
+        + Add filter
+      </button>
     </div>
   );
 };
