@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState, useContext } from "react";
 import Dropdown, { dropdownProps } from "./Dropdown";
 import {
   commonFieldOptions,
@@ -10,9 +11,13 @@ import {
   LanguageValues,
   SourceValues,
   RatingValues,
+  FilterShape,
 } from "../utils/constants";
 import InputField from "./InputField";
 import deleteIcon from "../assets/icons/delete.svg";
+import { observer } from "mobx-react-lite";
+import Store from "../store/Store";
+import { v4 as uuidv4 } from "uuid";
 
 const fieldOptions: dropdownProps["options"] = [
   {
@@ -51,44 +56,34 @@ const getCriteriaOptions = (type: string) => {
   }
 };
 
-export interface FilterShape {
-  type: "rule" | "rule_group";
-  field:
-    | "Theme"
-    | "Sub-theme"
-    | "Reason"
-    | "Language"
-    | "Source"
-    | "Rating"
-    | "Time Period"
-    | "Customer ID"
-    | "";
-  condition:
-    | "Equals"
-    | "Does not equal"
-    | "Like"
-    | "Not like"
-    | "Is Empty"
-    | "Is"
-    | "Is not"
-    | "";
-  value: string;
-}
-
 type FilterProps = {
-  filterGroupsRef: any;
   deletable: boolean;
   onDelete: () => void;
+  rule: FilterShape;
+  group_id: string;
 };
 
 const Filter = (props: FilterProps) => {
-  const [field, setField] = useState("");
-  const [condition, setCondition] = useState("");
-  const [criteria, setCriteria] = useState("");
+  const [field, setField] = useState<FilterShape["field"]>("");
+  const [condition, setCondition] = useState<FilterShape["condition"]>("");
+  const [criteria, setCriteria] = useState<FilterShape["value"]>("");
+
+  const { updateRule } = useContext(Store);
 
   useEffect(() => {
     setCriteria("");
   }, [field]);
+
+  useEffect(() => {
+    const newRule: FilterShape = {
+      ...props.rule,
+      field,
+      condition,
+      value: criteria,
+    };
+
+    updateRule(props.group_id, newRule.id || uuidv4(), newRule);
+  }, [field, condition, criteria]);
 
   return (
     <div className="flex mt-4 gap-x-4">
@@ -164,4 +159,4 @@ const Filter = (props: FilterProps) => {
   );
 };
 
-export default Filter;
+export default observer(Filter);

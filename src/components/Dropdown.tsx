@@ -9,7 +9,7 @@ export interface dropdownProps {
     value: string[];
   }[];
   selected: string;
-  setSelected: (value: string) => void;
+  setSelected: (value: any) => void;
   title: string;
 }
 

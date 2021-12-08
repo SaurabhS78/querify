@@ -65,3 +65,35 @@ export const dropdownValues = [
   "Rating",
   "",
 ];
+
+export interface FilterShape {
+  type: "rule";
+  field:
+    | "Theme"
+    | "Sub-theme"
+    | "Reason"
+    | "Language"
+    | "Source"
+    | "Rating"
+    | "Time Period"
+    | "Customer ID"
+    | "";
+  condition:
+    | "Equals"
+    | "Does not equal"
+    | "Like"
+    | "Not like"
+    | "Is Empty"
+    | "Is"
+    | "Is not"
+    | "";
+  value: string;
+  id?: string;
+}
+
+export interface FilterGroupsShape {
+  children: FilterShape[];
+  conjuction?: "AND" | "OR";
+  not?: boolean;
+  type: "rule_group";
+}

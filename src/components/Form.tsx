@@ -1,65 +1,73 @@
-import { useRef, useState } from "react";
+import { useContext } from "react";
 import infoIcon from "../assets/icons/info.svg";
-import Filter, { FilterShape } from "./Filter";
+import Filter from "./Filter";
 import {
   activeToggleStyle,
   buttonStyles,
   inactiveToggleStyle,
 } from "../styles/classNames";
+import { FilterGroupsShape } from "../utils/constants";
+import Store from "../store/Store";
+import { observer } from "mobx-react-lite";
 
-const Form = () => {
-  const [toggle, setToggle] = useState<string>("AND");
-  const [filters, setFilters] = useState<number[]>([0]);
-  const filterGroupsRef = useRef<FilterShape[]>(null);
+interface Props {
+  ruleGroup: FilterGroupsShape;
+  id: string;
+}
 
-  const addFilter = () => {
-    setFilters((filters) => [...filters, filters.length]);
+const Form = (props: Props) => {
+  const { toggleRuleGroupConjuction, deleteRule, addRule } = useContext(Store);
+
+  const handleToggleConjuction = (value: "AND" | "OR") => {
+    toggleRuleGroupConjuction(props.id, value);
   };
 
-  const deleteFilter = (index: number) => {
-    setFilters((filters) => filters.filter((i) => i !== index));
-  };
+  const { conjuction, children } = props.ruleGroup;
 
   return (
     <div className="bg-dark rounded-sm p-4 mb-5 border border-grey-200">
       <div
         className={` ${
-          filters.length < 2 ? "hidden" : ""
+          children.length < 2 ? "hidden" : ""
         } text-sm text-white font-medium`}
       >
         <span
           className={`rounded-l-sm ${
-            toggle === "AND" ? activeToggleStyle : inactiveToggleStyle
+            conjuction === "AND" ? activeToggleStyle : inactiveToggleStyle
           }`}
-          onClick={() => setToggle("AND")}
+          onClick={() => handleToggleConjuction("AND")}
         >
           AND
         </span>
         <span
           className={`rounded-r-sm ${
-            toggle === "OR" ? activeToggleStyle : inactiveToggleStyle
+            conjuction === "OR" ? activeToggleStyle : inactiveToggleStyle
           }`}
-          onClick={() => setToggle("OR")}
+          onClick={() => handleToggleConjuction("OR")}
         >
           OR
         </span>
         <img src={infoIcon} className="inline-block ml-2" alt="info" />
       </div>
 
-      {filters.map((filter) => (
+      {children.map((rule, index) => (
         <Filter
-          key={filter}
-          filterGroupsRef={filterGroupsRef}
-          deletable={filters.indexOf(filter) !== 0}
-          onDelete={() => deleteFilter(filter)}
+          key={rule.id}
+          deletable={index !== 0}
+          onDelete={() => deleteRule(props.id, rule.id || "")}
+          rule={rule}
+          group_id={props.id}
         />
       ))}
 
-      <button className={buttonStyles + " mt-4"} onClick={addFilter}>
+      <button
+        className={buttonStyles + " mt-4"}
+        onClick={() => addRule(props.id)}
+      >
         + Add filter
       </button>
     </div>
   );
 };
 
-export default Form;
+export default observer(Form);
