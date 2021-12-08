@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import { createContext } from "react";
 import { FilterGroupsShape, FilterShape } from "../utils/constants";
 import { v4 as uuidv4 } from "uuid";
@@ -77,6 +77,7 @@ class Store {
   };
 
   getQueryString = () => parseRuleGroup(this.RuleGroups);
+  getQueryObject = () => toJS(this.RuleGroups);
 }
 
 export default createContext(new Store());

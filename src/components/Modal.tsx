@@ -5,8 +5,15 @@ import Store from "../store/Store";
 import { observer } from "mobx-react-lite";
 
 const Modal = () => {
-  const { RuleGroups, addRuleGroup, getQueryString } = useContext(Store);
+  const { RuleGroups, addRuleGroup, getQueryString, getQueryObject } =
+    useContext(Store);
   const QueryString = getQueryString();
+
+  const handleSubmit = () => {
+    const queryObject = getQueryObject();
+    console.log(queryObject);
+    alert("Please check console");
+  };
 
   return (
     <div className="h-4/5 bg-black rounded-sm w-8/12 shadow-lg flex flex-col">
@@ -39,7 +46,12 @@ const Modal = () => {
           >
             Back
           </button>
-          <button className={`float-right ${buttonStyles}`}>Finish</button>
+          <button
+            className={`float-right ${buttonStyles}`}
+            onClick={handleSubmit}
+          >
+            Finish
+          </button>
         </div>
       </div>
     </div>

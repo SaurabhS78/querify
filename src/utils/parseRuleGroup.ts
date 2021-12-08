@@ -50,3 +50,4 @@ export default function parseRuleGroup(ruleGroup: RuleGroupType[]) {
 
   return QueryString;
 }
+
