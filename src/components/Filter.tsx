@@ -12,6 +12,7 @@ import {
   RatingValues,
 } from "../utils/constants";
 import InputField from "./InputField";
+import deleteIcon from "../assets/icons/delete.svg";
 
 const fieldOptions: dropdownProps["options"] = [
   {
@@ -74,7 +75,13 @@ export interface FilterShape {
   value: string;
 }
 
-const Filter = (props: { filterGroupsRef: any }) => {
+type FilterProps = {
+  filterGroupsRef: any;
+  deletable: boolean;
+  onDelete: () => void;
+};
+
+const Filter = (props: FilterProps) => {
   const [field, setField] = useState("");
   const [condition, setCondition] = useState("");
   const [criteria, setCriteria] = useState("");
@@ -143,6 +150,15 @@ const Filter = (props: { filterGroupsRef: any }) => {
           label="Criteria"
           type="number"
         />
+      )}
+
+      {props.deletable && (
+        <div
+          className="h-9 w-9 bg-grey-400 flex align-center justify-center rounded-md p-1 mt-6 hover:bg-black cursor-pointer"
+          onClick={props.onDelete}
+        >
+          <img alt="" src={deleteIcon} />
+        </div>
       )}
     </div>
   );

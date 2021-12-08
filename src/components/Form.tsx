@@ -16,9 +16,17 @@ const Form = () => {
     setFilters((filters) => [...filters, filters.length]);
   };
 
+  const deleteFilter = (index: number) => {
+    setFilters((filters) => filters.filter((i) => i !== index));
+  };
+
   return (
     <div className="bg-dark rounded-sm p-4 mb-5 border border-grey-200">
-      <div className="text-sm text-white font-medium">
+      <div
+        className={` ${
+          filters.length < 2 ? "hidden" : ""
+        } text-sm text-white font-medium`}
+      >
         <span
           className={`rounded-l-sm ${
             toggle === "AND" ? activeToggleStyle : inactiveToggleStyle
@@ -39,7 +47,12 @@ const Form = () => {
       </div>
 
       {filters.map((filter) => (
-        <Filter key={filter} filterGroupsRef={filterGroupsRef} />
+        <Filter
+          key={filter}
+          filterGroupsRef={filterGroupsRef}
+          deletable={filters.indexOf(filter) !== 0}
+          onDelete={() => deleteFilter(filter)}
+        />
       ))}
 
       <button className={buttonStyles + " mt-4"} onClick={addFilter}>
