@@ -3,7 +3,6 @@ import { useEffect, useState, useContext } from "react";
 import Dropdown, { dropdownProps } from "./Dropdown";
 import {
   commonFieldOptions,
-  condOptions,
   predictionFieldOptions,
   ThemeValues,
   dropdownValues,
@@ -12,6 +11,13 @@ import {
   SourceValues,
   RatingValues,
   FilterShape,
+  condOptionType1,
+  condOptionType3,
+  condOptionType2,
+  condOptionType4,
+  condOptionType5,
+  condOptionType6,
+  condOptionType7,
 } from "../utils/constants";
 import InputField from "./InputField";
 import deleteIcon from "../assets/icons/delete.svg";
@@ -27,12 +33,28 @@ const fieldOptions: dropdownProps["options"] = [
   { title: "COMMON", value: commonFieldOptions },
 ];
 
-const conditionOptions: dropdownProps["options"] = [
-  {
-    title: "",
-    value: condOptions,
-  },
-];
+const getConditionOptions = (field: string) => {
+  switch (field) {
+    case "Theme":
+      return [...condOptionType3, ...condOptionType4];
+    case "Sub-theme":
+      return [...condOptionType2, ...condOptionType3];
+    case "Reason":
+      return [...condOptionType2, ...condOptionType4, ...condOptionType6];
+    case "Language":
+      return [...condOptionType3, ...condOptionType6, ...condOptionType4];
+    case "Source":
+      return [...condOptionType3, ...condOptionType6];
+    case "Rating":
+      return [...condOptionType1, ...condOptionType5];
+    case "Time Period":
+      return [...condOptionType1, ...condOptionType7];
+    case "Customer ID":
+      return [...condOptionType1, ...condOptionType6];
+    default:
+      return [];
+  }
+};
 
 const getCriteriaOptions = (type: string) => {
   switch (type) {
@@ -94,12 +116,18 @@ const Filter = (props: FilterProps) => {
         setSelected={setField}
         options={fieldOptions}
       />
+
       <Dropdown
         title="Condition"
         placeholder="Select condition"
         selected={condition}
         setSelected={setCondition}
-        options={conditionOptions}
+        options={[
+          {
+            title: "",
+            value: getConditionOptions(field),
+          },
+        ]}
       />
 
       {dropdownValues.includes(field) && (

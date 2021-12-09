@@ -25,6 +25,22 @@ const getCondtionSymbol = (condition: string) => {
       return "===";
     case "Is not":
       return "!==";
+    case "Greater than":
+      return ">";
+    case "Less than":
+      return "<";
+    case "Greater than or equal to":
+      return ">=";
+    case "Less than or equal to":
+      return "<=";
+    case "Contains":
+      return "CONTAINS";
+    case "Does not contain":
+      return "!CONTAINS";
+    case "between":
+      return "BETWEEN";
+    case "not between":
+      return "!BETWEEN";
     case "AND":
       return "&&";
     case "OR":

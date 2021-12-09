@@ -10,15 +10,18 @@ export const predictionFieldOptions = [
 
 export const commonFieldOptions = ["Customer ID"];
 
-export const condOptions = [
-  "Equals",
-  "Does not equal",
-  "Like",
-  "Not like",
-  "Is Empty",
-  "Is",
-  "Is not",
+export const condOptionType1 = ["Equals", "Does not equal"];
+export const condOptionType2 = ["Like", "Not like"];
+export const condOptionType3 = ["Is", "Is not"];
+export const condOptionType4 = ["Is Empty", "Is not Empty"];
+export const condOptionType5 = [
+  "Greater than",
+  "Less than",
+  "Greater than or equal to",
+  "Less than or equal to",
 ];
+export const condOptionType6 = ["Contains", "Does not contain"];
+export const condOptionType7 = ["between", "Is not between"];
 
 export const ThemeValues = [
   "Offers",
